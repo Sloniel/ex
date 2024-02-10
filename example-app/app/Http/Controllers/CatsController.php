@@ -38,4 +38,19 @@ class CatsController extends Controller
         ]);
         return response()->json(['cats'=>$cats], 200);
     }
+
+    public function Toys()
+    {
+        return $this->hasMany(Toy::class);
+    }
+
+    public function Dishes()
+    {
+        return $this->hasMany(Dishes::class);
+    }
+
+    public function Cat_people()
+    {
+        return $this->hasMany(Cat_people::class);
+    }
 }

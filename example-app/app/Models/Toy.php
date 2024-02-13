@@ -4,12 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cat;
 
 class Toy extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'color'
+        'color',
+        'cat_id'
     ];
+
+    public function cats()
+    {
+        return $this->belongsTo(Cat::class);
+    }
 }

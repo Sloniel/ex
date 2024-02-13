@@ -4,26 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cat;
+use App\Models\Dish;
 
 class CatsController extends Controller
 {
-    public function getCats() {
-        $cats=Cat::where('id', 3)->get();
-        return response()->json(['cats'=>$cats], 200);
-    }
+    // public function getCats() {
+    //     $cats=Cat::where('id', 3)->get();
+    //     return response()->json(['cats'=>$cats], 200);
+    // }
 
-    public function create(Request $request) {
+    public function createCat(Request $request) {
         $cats=Cat::create([
+            'id' => $request->id,
             'name' => $request->name,
-            'gender' => $request->gender            
+            'gender' => $request->gender,
+            'dish_id' => $request->dish_id
+
         ]);
         return response()->json(['cats'=> $cats], 200);
     }
 
-    public function getCat($id) {
-        $cats=Cat::find($id);
-        return response()->json(['cats'=>$cats], 200);
-    }
+    // public function getCat($id) {
+    //     $cats=Cat::find($id);
+    //     return response()->json(['cats'=>$cats], 200);
+    // }
     
     public function deleteCat($id) {
         $cats=Cat::where('id', $id)->delete();
@@ -34,23 +38,24 @@ class CatsController extends Controller
         $cats=cat::find($request->id);
         $cats->update([
             'name' => $request->name,
-            'gender' => $request->gender
+            'gender' => $request->gender,
+            'dish_id' => $request->dish_id
         ]);
         return response()->json(['cats'=>$cats], 200);
     }
 
-    public function Toys()
-    {
-        return $this->hasMany(Toy::class);
+    public function index() {
+        $cats=Cat::query()->with('dishes', 'toys','peoples')->get();
+        return response()->json(['cats'=>$cats], 200);
     }
 
-    public function Dishes()
-    {
-        return $this->hasMany(Dishes::class);
-    }
-
-    public function Cat_people()
-    {
-        return $this->hasMany(Cat_people::class);
+    public function createCatDish($cat_id, $dish_id) {
+        $cats=Cat::find($cat_id)->update([
+            'dish_id' => $dish_id
+        ]);
+        $dishes=Dish::find($dish_id)->update([
+            'cat_id' => $cat_id
+        ]);
+        return response()->json(['status'=> 'succes', 'cats'=>$cats], 200);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cat;
 
 class People extends Model
 {
@@ -12,7 +13,13 @@ class People extends Model
     protected $fillable = [
         'name',
         'age',
-        'number'
+        'number',
+        'dish_id'
     ];
+
+    public function cats()
+    {
+        return $this->belongsToMany(Cat::class);
+    }
 
 }

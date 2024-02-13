@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('color');
             $table->integer('cat_id');
-            // $table->unsignedBigInteger('cat_id')->nulable;
+            // $table->unsignedBigInteger('cat_id')->nullable();
             $table->foreign('cat_id')->on('cats')->references('id');
             $table->timestamps();
         });

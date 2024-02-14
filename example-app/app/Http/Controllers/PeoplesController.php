@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\People\createPeople;
+use App\Http\Requests\People\updatePeople;
 use Illuminate\Http\Request;
 use App\Models\People;
 
@@ -12,7 +14,7 @@ class PeoplesController extends Controller
         return response()->json(['peoples' => $peoples], 200);
     }
 
-    public function createPeople(Request $request) {
+    public function createPeople(createPeople $request) {
         $peoples=People::create([
             'name' => $request->name,
             'age' => $request->age,
@@ -26,7 +28,7 @@ class PeoplesController extends Controller
         return response()->json(['peoples'=>$peoples], 200);
     }
 
-    public function updatePeople(Request $request) {
+    public function updatePeople(updatePeople $request) {
         $peoples=People::find($request->id);
         $peoples->update([
             'name' => $request->name,

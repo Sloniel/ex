@@ -55,7 +55,7 @@ Route::controller(DishesController::class)->group(function(){
 Route::controller(ToysController::class)->group(function(){
     Route::get('toys','index');
 
-    Route::post('toys', 'createPToy');
+    Route::post('toys', 'createToy');
     Route::delete('toys/{id}', 'deleteToy');
     Route::patch('toys', 'updateToy'); 
 

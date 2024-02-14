@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Toy\createToy;
+use App\Http\Requests\Toy\updateToy;
 use App\Models\Toy;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,7 @@ class ToysController extends Controller
         return response()->json(['toys' => $toys], 200);
     }
 
-    public function createPToy(Request $request) {
+    public function createToy(createToy $request) {
         $toys=Toy::create([
             'color' => $request->color,
             'cat_id' => $request->cat_id
@@ -26,7 +28,7 @@ class ToysController extends Controller
         return response()->json(['toys'=>$toys], 200);
     }
 
-    public function updateToy(Request $request) {
+    public function updateToy(updateToy $request) {
         $toys=Toy::find($request->id);
         $toys->update([
             'color' => $request->color,

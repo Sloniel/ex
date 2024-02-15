@@ -9,8 +9,10 @@ use App\Models\People;
 
 class PeoplesController extends Controller
 {
-    public function index() {
-        $peoples = People::with('cats')->get();
+    public function index(Request $request) {
+        $limit = $request->limit;
+        $page = $request->page;
+        $peoples = People::with('cats')->orderBy('created_at')->Paginate($perPage = $limit, $columns = ['*'],$pageName = $page);
         return response()->json(['peoples' => $peoples], 200);
     }
 

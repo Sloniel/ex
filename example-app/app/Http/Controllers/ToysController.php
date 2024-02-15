@@ -9,16 +9,15 @@ use Illuminate\Http\Request;
 
 class ToysController extends Controller
 {
-    public function index() {
-        $toys = Toy::query()->with('cats')->get();
-        return response()->json(['toys' => $toys], 200);
-    }
+    // public function index() {
+    //     $toys = Toy::query()->with('cats')->get();
+    //     return response()->json(['toys' => $toys], 200);
+    // }
 
     public function createToy(createToy $request) {
         $toys=Toy::create([
             'color' => $request->color,
             'cat_id' => $request->cat_id
-
         ]);
         return response()->json(['toys'=> $toys], 200);
     }
@@ -42,5 +41,15 @@ class ToysController extends Controller
             'cat_id' => $cat_id
         ]);
         return response()->json(['status'=> 'succes', 'cats'=>$cats], 200);
+    }
+
+    public function index(Request $request) {
+        $limit = $request->limit;
+        $page = $request->page;
+        $toys = Toy::query()->with('cats')->orderBy('created_at')->cursorPaginate(
+            $perPage = $limit, 
+            $columns = ['*'],
+            $pageName = $page);
+        return response()->json(['toys' => $toys], 200);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Models\Cat;
 use App\Models\Dish;
 use App\Http\Requests\Cat\createCat;
@@ -46,9 +46,16 @@ class CatsController extends Controller
         return response()->json(['cats'=>$cats], 200);
     }
 
-    public function index() {
-        $cats=Cat::query()->with('dishes', 'toys','peoples')->get();
-        $cats = Cat::paginate(2);
+    public function index(Request $request) { /* +0+0+0+0+0+ */
+        $limit = $request->limit;
+        $page = $request->page;
+        $cats=Cat::query()
+            ->with('dishes', 'toys','peoples')
+            ->orderBy('created_at')
+            ->Paginate(
+                $perPage = $limit, 
+                $columns = ['*'],
+                $pageName = $page);
         return response()->json(['cats'=>$cats], 200);
     }
 
@@ -62,5 +69,8 @@ class CatsController extends Controller
         return response()->json(['status'=> 'succes', 'cats'=>$cats], 200);
     }
 
-
+    // public function page(){
+    //     $cats = Cat::paginate(2);
+    //     return response()->json(['cats'=>$cats], 200);
+    // }
 }

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Dish\createDish;
 use App\Http\Requests\Dish\updateDish;
 use App\Models\Dish;
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 class DishesController extends Controller
 {
-    public function index() {
-        $dishes = Dish::with('cats')->get();
+    public function index(Request $request) {
+        $limit = $request->limit;
+        $page = $request->page;
+        $dishes = Dish::with('cats')->orderBy('created_at')->Paginate($perPage = $limit, $columns = ['*'],$pageName = $page);
         return response()->json(['dishes' => $dishes], 200);
     }
 

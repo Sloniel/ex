@@ -12,7 +12,11 @@ class DishesController extends Controller
     public function index(Request $request) {
         $limit = $request->limit;
         $page = $request->page;
-        $dishes = Dish::with('cats')->orderBy('created_at')->Paginate($perPage = $limit, $columns = ['*'],$pageName = $page);
+        $dishes = Dish::with('cats')->orderBy('created_at')->Paginate(
+            $perPage = $limit, 
+            $columns = ['*'],
+            $pageName = $page
+        );
         return response()->json(['dishes' => $dishes], 200);
     }
 

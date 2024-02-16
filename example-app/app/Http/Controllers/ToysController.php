@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Toy\createToy;
 use App\Http\Requests\Toy\updateToy;
 use App\Models\Toy;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 
 class ToysController extends Controller
@@ -46,6 +47,9 @@ class ToysController extends Controller
     public function index(Request $request) {
         $limit = $request->limit;
         $page = $request->page;
+        if(!isset($limit)) { 
+            $limit = 2;
+        }
         $toys = Toy::query()->with('cats')->orderBy('created_at')->cursorPaginate(
             $perPage = $limit, 
             $columns = ['*'],

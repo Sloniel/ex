@@ -39,16 +39,16 @@
 				"auth-model": "native"
 			}
 		},
-		"postgres-jdbc-18d93e9bf55-448301a76aa91f0f": {
+		"postgres-jdbc-18db19c8cf8-7e99f38d55708937": {
 			"provider": "postgresql",
 			"driver": "postgres-jdbc",
-			"name": "Post 3",
+			"name": "post",
 			"save-password": true,
 			"configuration": {
 				"host": "localhost",
 				"port": "5432",
-				"database": "Post",
-				"url": "jdbc:postgresql://localhost:5432/Post",
+				"database": "post",
+				"url": "jdbc:postgresql://localhost:5432/post",
 				"configurationType": "MANUAL",
 				"home": "postgresql_client",
 				"type": "dev",

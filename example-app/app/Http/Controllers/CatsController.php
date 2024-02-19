@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Event\EventCatsName;
 use Illuminate\Http\Request;
 use App\Models\Cat;
 use App\Models\Dish;
 use App\Http\Requests\Cat\createCat;
 use App\Http\Requests\Cat\updateCat;
+use Illuminate\Pipeline\Pipeline;
 
 class CatsController extends Controller
 {
@@ -46,17 +48,42 @@ class CatsController extends Controller
         return response()->json(['cats'=>$cats], 200);
     }
 
+    // public function index(Request $request) { /* +0+0+0+0+0+ */
+    //     $limit = $request->limit;
+    //     $page = $request->page;
+    //     $cats=Cat::query()
+    //         ->with('dishes', 'toys','peoples')
+    //         ->orderBy('created_at')
+    //         ->Paginate(
+    //             $perPage = $limit, 
+    //             $columns = ['*'],
+    //             $pageName = $page);
+    //     return response()->json(['cats'=>$cats], 200);
+    // }
+
     public function index(Request $request) { /* +0+0+0+0+0+ */
+        $pagination = $request->pagination;
         $limit = $request->limit;
         $page = $request->page;
         $cats=Cat::query()
             ->with('dishes', 'toys','peoples')
-            ->orderBy('created_at')
+            /*->orderBy('created_at')
             ->Paginate(
                 $perPage = $limit, 
                 $columns = ['*'],
-                $pageName = $page);
-        return response()->json(['cats'=>$cats], 200);
+                $pageName = $page)*/;
+        $response = app(Pipeline::class) 
+            ->send($cats)
+            ->through([EventCatsName::class])
+            ->via('apply')
+            ->then(function ($cats) use ($pagination , $page, $limit){
+                return $pagination === 'true'
+                    ? $cats->orderBy('created_at')
+                        ->paginate($limit, ['*'], 'page' , $page)
+                        ->appends(request()->except('page'))
+                    : $cats->orderBy('created_at')->get();
+            });
+        return response()->json(['cats' => $response], 200);
     }
 
     public function createCatDish($cat_id, $dish_id) {

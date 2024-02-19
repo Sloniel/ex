@@ -65,21 +65,16 @@ class CatsController extends Controller
         $pagination = $request->pagination;
         $limit = $request->limit;
         $page = $request->page;
-        $cats=Cat::query()
-            ->with('dishes', 'toys','peoples')
-            /*->orderBy('created_at')
-            ->Paginate(
-                $perPage = $limit, 
-                $columns = ['*'],
-                $pageName = $page)*/;
+        $cats=Cat::query()->with('dishes', 'toys', 'peoples');
+
         $response = app(Pipeline::class) 
             ->send($cats)
             ->through([EventCatsName::class])
             ->via('apply')
-            ->then(function ($cats) use ($pagination , $page, $limit){
+            ->then(function ($cats) use ($pagination, $page, $limit){
                 return $pagination === 'true'
                     ? $cats->orderBy('created_at')
-                        ->paginate($limit, ['*'], 'page' , $page)
+                        ->paginate($limit, ['*'], 'page', $page)
                         ->appends(request()->except('page'))
                     : $cats->orderBy('created_at')->get();
             });

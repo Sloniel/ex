@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('dishes', function (Blueprint $table) {
             $table->id();
             $table->string('color');
-            $table->unsignedBigInteger('cat_id')->nullable();
-            $table->index('cat_id');
+            // $table->unsignedBigInteger('cat_id');
+            $table->index('cat_id')->nullable();
             $table->foreign('cat_id')->on('cats')->references('id');
             $table->timestamps();
         });

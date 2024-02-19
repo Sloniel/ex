@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Filters\Event;
-use App\Filters\Pipe;
+use App\Filters\Event\Pipe;
 use Closure;
 
 class EventCatsName implements Pipe {

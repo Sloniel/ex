@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filters;
+namespace App\Filters\Event;
 
 use Closure;
 
 interface Pipe{
-    public function apply($content, Closure $next);
+    public function apply($query, Closure $next);
 }
